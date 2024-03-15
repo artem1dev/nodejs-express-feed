@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const { validationResult } = require("express-validator");
+const { validationResult } = require("express-validator/check");
 
 const io = require("../socket");
 const Post = require("../models/post");
@@ -157,6 +157,7 @@ exports.deletePost = async (req, res, next) => {
         }
         clearImage(post.imageUrl);
         await Post.findByIdAndRemove(postId);
+
         const user = await User.findById(req.userId);
         user.posts.pull(postId);
         await user.save();
